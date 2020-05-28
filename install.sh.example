@@ -1,0 +1,42 @@
+#!/bin/bash
+
+MY_HOME="/home/ubuntu"
+export DEBIAN_FRONTEND=noninteractive
+
+apt update
+apt install -y python3-pip curl git awscli apt-transport-https ca-certificates software-properties-common
+
+sudo bash -c "sed -i '1,15s/#Port 22/#Port 22\nPort 40022/g' /etc/ssh/sshd_config"
+sudo systemctl restart sshd
+
+aws configure << EOF
+<AWS_ACCESS_KEY>  # ######~~~
+<AWS_SECRET_KEY>  # ######~~~~~
+<REGION>          # ap-northeast-2
+<SHAPE_OF_OUTPUT> # json
+EOF
+
+aws lightsail put-instance-public-ports --instance-name=devops-main --port-info fromPort=40022,toPort=40022,protocol=tcp fromPort=443,toPort=443,protocol=tcp fromPort=80,toPort=80,protocol=tcp
+
+aws lightsail create-domain \
+    --region us-east-1 \
+    --domain-name <example.com>
+
+#aws lightsail close-instance-public-ports --instance-name=devops-main --port-info fromPort=22,toPort=22,protocol=tcp
+
+# Install docker
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+apt update
+apt-cache policy docker-ce
+apt install -y docker-ce
+
+# Install docker-ce
+su ubuntu -c "mkdir -p $MY_HOME/.local/bin"
+su ubuntu -c "pip3 install docker-compose --upgrade --user && chmod 754 $MY_HOME/.local/bin/docker-compose"
+usermod -aG docker ubuntu
+
+# Add PATH
+printf "\nexport PATH=\$PATH:$MY_HOME/.local/bin\n" >> $MY_HOME/.bashrc
+
+exit 0

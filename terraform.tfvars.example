@@ -1,0 +1,4 @@
+access_key = ""
+secret_key = ""
+public_key_path = "~/.ssh/***.pub"
+private_key_path = "~/.ssh/***"
