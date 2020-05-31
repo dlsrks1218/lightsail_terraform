@@ -4,7 +4,7 @@ MY_HOME="/home/ubuntu"
 export DEBIAN_FRONTEND=noninteractive
 
 apt update
-apt install -y python3-pip curl git awscli apt-transport-https ca-certificates software-properties-common
+apt install -y python3-pip curl git awscli apt-transport-https ca-certificates software-properties-common tree
 
 sudo bash -c "sed -i '1,15s/#Port 22/#Port 22\nPort 40022/g' /etc/ssh/sshd_config"
 sudo systemctl restart sshd
@@ -16,7 +16,7 @@ aws configure << EOF
 <SHAPE_OF_OUTPUT> # json
 EOF
 
-aws lightsail put-instance-public-ports --instance-name=devops-main --port-info fromPort=40022,toPort=40022,protocol=tcp fromPort=443,toPort=443,protocol=tcp fromPort=80,toPort=80,protocol=tcp
+aws lightsail put-instance-public-ports --instance-name=devops-main --port-info fromPort=40022,toPort=40022,protocol=tcp fromPort=443,toPort=443,protocol=tcp fromPort=80,toPort=80,protocol=tcp fr    omPort=8000,toPort=8000,protocol=tcp fr    omPort=3306,toPort=3306,protocol=tcp
 
 aws lightsail create-domain \
     --region us-east-1 \
