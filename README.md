@@ -32,14 +32,3 @@ terraform apply -auto-approve
 terraform destroy
 ```
 =======
-# lightsail_terraform
->>>>>>> 75071954d22b911662d4d007f6578547033e67bb
-=======
-# lightsail_terraform
->>>>>>> 75071954d22b911662d4d007f6578547033e67bb
-=======
-# lightsail_terraform
->>>>>>> 75071954d22b911662d4d007f6578547033e67bb
-=======
-# lightsail_terraform
->>>>>>> 75071954d22b911662d4d007f6578547033e67bb
